@@ -1,6 +1,10 @@
 package com.codingshuttle.projects.lovable_clone.entity;
 
 import com.codingshuttle.projects.lovable_clone.enums.MessageRole;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,8 +16,10 @@ import java.time.Instant;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ChatMessage {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
     ChatSession chatSession;
 
     String content;
