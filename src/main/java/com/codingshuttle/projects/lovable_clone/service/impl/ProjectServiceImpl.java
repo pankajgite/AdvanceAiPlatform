@@ -36,6 +36,7 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = Project.builder()
                 .name(request.name())
                 .owner(owner)
+                .isPublic(false)
                 .build();
         project=projectRepository.save(project);
         return projectMapper.toProjectResponse(project);
@@ -43,7 +44,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectSummaryResponse> getUserProjects(Long userId) {
-        return List.of();
+        List<Project> projects=projectRepository.findAllAccessibleProjectsByUser(userId);
+        return projectMapper.toProjectSummaryResponse(projects);
     }
 
     @Override
