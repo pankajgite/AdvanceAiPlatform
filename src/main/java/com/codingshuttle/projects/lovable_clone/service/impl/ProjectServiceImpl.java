@@ -50,7 +50,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectResponse getProjectById(Long id, Long userId) {
-        return null;
+        Project project=projectRepository.findByIdAndOwnerId(id,userId).orElseThrow(()->new RuntimeException("Project not found with id: "+id));
+        return projectMapper.toProjectResponse(project);
     }
 
 
@@ -62,6 +63,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void softDeleteProject(Long id, Long userId) {
-
+        Project project=projectRepository.findByIdAndOwnerId(id,userId).orElseThrow(()->new RuntimeException("Project not found with id: "+id));
+//        project.setDeletedAt(System.currentTimeMillis());
+//        projectRepository.save(project);
     }
 }

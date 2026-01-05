@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
@@ -17,4 +18,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             "WHERE p.deletedAt IS NULL " +
             "AND (p.owner.id = :userId OR p.isPublic = true)")
     List<Project> findAllAccessibleProjectsByUser(@Param("userId") Long userId);
+
+    Optional<Project> findByIdAndOwnerId(Long id, Long userId);
 }
