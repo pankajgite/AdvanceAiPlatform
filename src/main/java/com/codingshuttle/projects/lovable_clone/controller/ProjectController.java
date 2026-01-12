@@ -4,6 +4,7 @@ import com.codingshuttle.projects.lovable_clone.dto.project.ProjectRequest;
 import com.codingshuttle.projects.lovable_clone.dto.project.ProjectResponse;
 import com.codingshuttle.projects.lovable_clone.dto.project.ProjectSummaryResponse;
 import com.codingshuttle.projects.lovable_clone.service.ProjectService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -30,14 +31,14 @@ public class ProjectController {
     }
 
     @PostMapping
-    public ResponseEntity<ProjectResponse> createProject(@RequestBody ProjectRequest request){
+    public ResponseEntity<ProjectResponse> createProject(@RequestBody @Valid ProjectRequest request){
         Long userId=1L;
         System.out.println("Under controller");
         return ResponseEntity.ok(projectService.createProject(request,userId));
     }
 
     @PatchMapping("/{id}")
-    public  ResponseEntity<ProjectResponse> updateProject(@RequestBody ProjectRequest request,@PathVariable Long id){
+    public  ResponseEntity<ProjectResponse> updateProject(@RequestBody @Valid ProjectRequest request,@PathVariable Long id){
         Long userId=1L;
         return ResponseEntity.ok(projectService.updateProject(id,request,userId));
     }

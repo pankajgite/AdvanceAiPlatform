@@ -9,7 +9,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ProjectMapper {
-    ProjectResponse toProjectResponse(Project project);
+     ProjectResponse toProjectResponse(Project project);
 
     List<ProjectSummaryResponse> toProjectSummaryResponse(List<Project> projects);
 }
