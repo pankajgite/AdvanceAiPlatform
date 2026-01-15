@@ -11,6 +11,7 @@ import com.codingshuttle.projects.lovable_clone.mapper.ProjectMemberMapper;
 import com.codingshuttle.projects.lovable_clone.repository.ProjectMemberRepository;
 import com.codingshuttle.projects.lovable_clone.repository.ProjectRepository;
 import com.codingshuttle.projects.lovable_clone.repository.UserRepository;
+import com.codingshuttle.projects.lovable_clone.security.AuthUtil;
 import com.codingshuttle.projects.lovable_clone.service.ProjectMemberService;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -31,10 +32,12 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     ProjectMemberRepository projectMemberRepository;
     ProjectRepository projectRepository;
     ProjectMemberMapper projectMemberMapper;
-    private final UserRepository userRepository;
+    UserRepository userRepository;
+    AuthUtil authUtil;
 
     @Override
-    public List<MemberResponse> getProjectMembers(Long projectId, Long userId) {
+    public List<MemberResponse> getProjectMembers(Long projectId) {
+        Long userId=authUtil.getCurrentUserId();
         Project project = getAccessableProjectById(projectId);
         List<MemberResponse> memberList = new ArrayList<>();
         memberList.addAll(
@@ -47,9 +50,9 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     }
 
     @Override
-    public MemberResponse inviteMember(Long projectId, InviteMemberRequest request, Long userId) {
+    public MemberResponse inviteMember(Long projectId, InviteMemberRequest request) {
         Project project = getAccessableProjectById(projectId);
-
+        Long userId=authUtil.getCurrentUserId();
 
         User invitee = userRepository.findByUsername(request.email()).orElseThrow(()->new RuntimeException("User Not Found With this Email: "+request.email()));
 
@@ -76,8 +79,9 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     }
 
     @Override
-    public void removeProjectMember(Long projectId, Long memberId, Long userId) {
+    public void removeProjectMember(Long projectId, Long memberId) {
         Project project = getAccessableProjectById(projectId);
+        Long userId=authUtil.getCurrentUserId();
 
 
         ProjectMemberId projectMemberId = new ProjectMemberId(projectId,memberId);
@@ -90,7 +94,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     }
 
     @Override
-    public MemberResponse updateMemberRole(Long projectId, Long memberId, UpdateMemberRoleRequest request, Long userId) {
+    public MemberResponse updateMemberRole(Long projectId, Long memberId, UpdateMemberRoleRequest request) {
         Project project = getAccessableProjectById(projectId);
 
 
