@@ -12,21 +12,18 @@ import java.util.Optional;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
-    List<Project> findByOwnerId(Long userId);
+
 
     @Query("SELECT p FROM Project p " +
-            "WHERE p.deletedAt IS NULL " +
-            "AND (p.owner.id = :userId OR p.isPublic = true)")
+            "WHERE p.deletedAt IS NULL "
+            )
     List<Project> findAllAccessibleProjectsByUser(@Param("userId") Long userId);
 
     @Query("""
                     SELECT p FROM Project p
-                    LEFT JOIN FETCH p.owner
                     WHERE p.id=:projectId
                     AND p.deletedAt IS NULL
-                    AND p.owner.id= :userId
                     """
     )
-    Optional<Project> findAccessableProjectById(@Param("projectId") Long projectId,
-                                         @Param("userId") Long userId);
+    Optional<Project> findAccessableProjectById(@Param("projectId") Long projectId);
 }

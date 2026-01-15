@@ -34,6 +34,7 @@ public class ProjectController {
     public ResponseEntity<ProjectResponse> createProject(@RequestBody @Valid ProjectRequest request){
         Long userId=1L;
         System.out.println("Under controller");
+        System.out.println(request.name());
         return ResponseEntity.ok(projectService.createProject(request,userId));
     }
 
