@@ -35,9 +35,8 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 
     @Override
     public List<MemberResponse> getProjectMembers(Long projectId, Long userId) {
-        Project project = getAccessableProjectById(projectId, userId);
+        Project project = getAccessableProjectById(projectId);
         List<MemberResponse> memberList = new ArrayList<>();
-        memberList.add(projectMemberMapper.toProjectMemberResponseFromOwner(project.getOwner()));
         memberList.addAll(
                 projectMemberRepository.findByIdProjectId(projectId)
                         .stream()
@@ -49,14 +48,10 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 
     @Override
     public MemberResponse inviteMember(Long projectId, InviteMemberRequest request, Long userId) {
-        Project project = getAccessableProjectById(projectId, userId);
+        Project project = getAccessableProjectById(projectId);
 
 
-        if(!project.getOwner().getId().equals(userId)){
-            throw new RuntimeException("You Cannot Invite You Are not the Owner!!");
-        }
-
-        User invitee = userRepository.findByEmail(request.email()).orElseThrow(()->new RuntimeException("User Not Found With this Email: "+request.email()));
+        User invitee = userRepository.findByUsername(request.email()).orElseThrow(()->new RuntimeException("User Not Found With this Email: "+request.email()));
 
         if(invitee.getId().equals(userId)){
             throw new RuntimeException("Cannot Invite yourself");
@@ -82,11 +77,8 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 
     @Override
     public void removeProjectMember(Long projectId, Long memberId, Long userId) {
-        Project project = getAccessableProjectById(projectId,userId);
+        Project project = getAccessableProjectById(projectId);
 
-        if(!project.getOwner().getId().equals(userId)){
-            throw new RuntimeException("You Are not the Owner!!");
-        }
 
         ProjectMemberId projectMemberId = new ProjectMemberId(projectId,memberId);
 
@@ -99,11 +91,8 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 
     @Override
     public MemberResponse updateMemberRole(Long projectId, Long memberId, UpdateMemberRoleRequest request, Long userId) {
-        Project project = getAccessableProjectById(projectId,userId);
+        Project project = getAccessableProjectById(projectId);
 
-        if(!project.getOwner().getId().equals(userId)){
-            throw new RuntimeException("You Are not the Owner!!");
-        }
 
         ProjectMemberId projectMemberId = new ProjectMemberId(projectId,memberId);
 
@@ -116,7 +105,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         return projectMemberMapper.toProjectMemberResponseFromProjectMember(member);
     }
 
-    public Project getAccessableProjectById(Long projectId, Long userId) {
-        return projectRepository.findAccessableProjectById(projectId, userId).orElseThrow(() -> new RuntimeException("Project not found with id: " + projectId));
+    public Project getAccessableProjectById(Long projectId) {
+        return projectRepository.findAccessableProjectById(projectId).orElseThrow(() -> new RuntimeException("Project not found with id: " + projectId));
     }
 }

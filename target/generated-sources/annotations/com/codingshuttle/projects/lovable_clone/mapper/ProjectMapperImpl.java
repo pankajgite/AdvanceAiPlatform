@@ -4,8 +4,6 @@ import com.codingshuttle.projects.lovable_clone.dto.auth.UserProfileResponse;
 import com.codingshuttle.projects.lovable_clone.dto.project.ProjectResponse;
 import com.codingshuttle.projects.lovable_clone.dto.project.ProjectSummaryResponse;
 import com.codingshuttle.projects.lovable_clone.entity.Project;
-import com.codingshuttle.projects.lovable_clone.entity.User;
-import com.codingshuttle.projects.lovable_clone.enums.ProjectRole;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-01-12T00:27:29+0530",
+    date = "2026-01-12T23:51:36+0530",
     comments = "version: 1.6.0, compiler: javac, environment: Java 24.0.1 (Oracle Corporation)"
 )
 @Component
@@ -30,13 +28,13 @@ public class ProjectMapperImpl implements ProjectMapper {
         String name = null;
         Instant createdAt = null;
         Instant updatedAt = null;
-        UserProfileResponse owner = null;
 
         id = project.getId();
         name = project.getName();
         createdAt = project.getCreatedAt();
         updatedAt = project.getUpdatedAt();
-        owner = userToUserProfileResponse( project.getOwner() );
+
+        UserProfileResponse owner = null;
 
         ProjectResponse projectResponse = new ProjectResponse( id, name, createdAt, updatedAt, owner );
 
@@ -55,29 +53,6 @@ public class ProjectMapperImpl implements ProjectMapper {
         }
 
         return list;
-    }
-
-    protected UserProfileResponse userToUserProfileResponse(User user) {
-        if ( user == null ) {
-            return null;
-        }
-
-        Long id = null;
-        String email = null;
-        String name = null;
-        String avatarUrl = null;
-
-        id = user.getId();
-        email = user.getEmail();
-        name = user.getName();
-        avatarUrl = user.getAvatarUrl();
-
-        ProjectRole role = null;
-        Instant invitedAt = null;
-
-        UserProfileResponse userProfileResponse = new UserProfileResponse( id, email, name, avatarUrl, role, invitedAt );
-
-        return userProfileResponse;
     }
 
     protected ProjectSummaryResponse projectToProjectSummaryResponse(Project project) {
