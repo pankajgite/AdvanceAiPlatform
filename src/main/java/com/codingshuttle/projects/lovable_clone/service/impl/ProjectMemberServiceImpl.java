@@ -7,6 +7,8 @@ import com.codingshuttle.projects.lovable_clone.entity.Project;
 import com.codingshuttle.projects.lovable_clone.entity.ProjectMember;
 import com.codingshuttle.projects.lovable_clone.entity.ProjectMemberId;
 import com.codingshuttle.projects.lovable_clone.entity.User;
+import com.codingshuttle.projects.lovable_clone.error.BadRequestException;
+import com.codingshuttle.projects.lovable_clone.error.ResourceNotFoundException;
 import com.codingshuttle.projects.lovable_clone.mapper.ProjectMemberMapper;
 import com.codingshuttle.projects.lovable_clone.repository.ProjectMemberRepository;
 import com.codingshuttle.projects.lovable_clone.repository.ProjectRepository;
@@ -18,6 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -36,6 +39,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     AuthUtil authUtil;
 
     @Override
+    @PreAuthorize("@security.canViewMembers(#projectId)")
     public List<MemberResponse> getProjectMembers(Long projectId) {
         Long userId=authUtil.getCurrentUserId();
         Project project = getAccessableProjectById(projectId);
@@ -50,11 +54,12 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     }
 
     @Override
+    @PreAuthorize("@security.canManageMembers(#projectId)")
     public MemberResponse inviteMember(Long projectId, InviteMemberRequest request) {
         Project project = getAccessableProjectById(projectId);
         Long userId=authUtil.getCurrentUserId();
 
-        User invitee = userRepository.findByUsername(request.email()).orElseThrow(()->new RuntimeException("User Not Found With this Email: "+request.email()));
+        User invitee = userRepository.findByUsername(request.email()).orElseThrow(()->new ResourceNotFoundException("User With Email",request.email()));
 
         if(invitee.getId().equals(userId)){
             throw new RuntimeException("Cannot Invite yourself");
@@ -79,6 +84,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     }
 
     @Override
+    @PreAuthorize("@security.canManageMembers(#projectId)")
     public void removeProjectMember(Long projectId, Long memberId) {
         Project project = getAccessableProjectById(projectId);
         Long userId=authUtil.getCurrentUserId();
@@ -94,6 +100,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     }
 
     @Override
+    @PreAuthorize("@security.canManageMembers(#projectId)")
     public MemberResponse updateMemberRole(Long projectId, Long memberId, UpdateMemberRoleRequest request) {
         Project project = getAccessableProjectById(projectId);
 

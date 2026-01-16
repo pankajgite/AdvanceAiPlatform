@@ -36,4 +36,15 @@ public class GlobelExceptionHandler {
         log.error(apiError.toString(), e);
         return ResponseEntity.status(apiError.status()).body(apiError);
     }
+
+    @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
+    public ResponseEntity<ApiError> handleAccessDeniedException(org.springframework.security.access.AccessDeniedException e) {
+        // 1. Add your custom logging here
+        log.error("Unauthorized access attempt: User is not authorized to perform this action.", e);
+
+        // 2. Create a custom response
+        ApiError apiError = new ApiError(HttpStatus.FORBIDDEN, "User is not authorized to update this project");
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(apiError);
+    }
 }
