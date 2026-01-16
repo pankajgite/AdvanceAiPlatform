@@ -41,7 +41,8 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectResponse createProject(ProjectRequest request) {
         Long userId=authUtil.getCurrentUserId();
-        User owner=userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User",userId.toString()));
+//        User owner=userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User",userId.toString()));
+        User owner=userRepository.getReferenceById(userId);
         Project project = Project.builder()
                 .name(request.name())
                 .isPublic(false)
@@ -93,6 +94,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 
     public Project getAccessableProjectById(Long projectId){
-        return projectRepository.findAccessableProjectById(projectId).orElseThrow(()->new ResourceNotFoundException("Project",projectId.toString()));
+
+        return projectRepository.findAccessableProjectById(projectId,authUtil.getCurrentUserId()).orElseThrow(()->new ResourceNotFoundException("Project",projectId.toString()));
     }
 }
