@@ -20,6 +20,8 @@ import com.codingshuttle.projects.lovable_clone.service.ProjectService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +32,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Transactional
+@Slf4j
 public class ProjectServiceImpl implements ProjectService {
     ProjectRepository projectRepository;
     UserRepository userRepository;
@@ -69,6 +72,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @PreAuthorize("@security.canViewProject(#id)")
     public ProjectResponse getProjectById(Long id) {
         Project project=getAccessableProjectById(id);
         return projectMapper.toProjectResponse(project);
@@ -77,7 +81,9 @@ public class ProjectServiceImpl implements ProjectService {
 
 
     @Override
+    @PreAuthorize("@security.canEditProject(#id)")
     public ProjectResponse updateProject(Long id, ProjectRequest request) {
+        log.info("Under Update Project BY"+authUtil.getCurrentUserId());
         Project project=getAccessableProjectById(id);
         project.setName(request.name());
         projectRepository.save(project);
@@ -85,6 +91,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @PreAuthorize("@security.canDeleteProject(#id)")
     public void softDeleteProject(Long id) {
         Project project= getAccessableProjectById(id);
 
