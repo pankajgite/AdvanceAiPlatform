@@ -110,6 +110,6 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     }
 
     public Project getAccessableProjectById(Long projectId) {
-        return projectRepository.findAccessableProjectById(projectId).orElseThrow(() -> new RuntimeException("Project not found with id: " + projectId));
+        return projectRepository.findAccessableProjectById(projectId, authUtil.getCurrentUserId()).orElseThrow(() -> new RuntimeException("Project not found with id: " + projectId));
     }
 }
