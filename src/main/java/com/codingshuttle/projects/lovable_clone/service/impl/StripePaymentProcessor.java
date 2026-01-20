@@ -14,6 +14,7 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class StripePaymentProcessor implements PaymentProcessor {
     private final AuthUtil authUtil;
     private final PlanRepository planRepository;
@@ -83,6 +85,6 @@ public class StripePaymentProcessor implements PaymentProcessor {
 
     @Override
     public void handleWebhookEvent(String type, Map<String, String> metadata) {
-
+        log.info("type");
     }
 }

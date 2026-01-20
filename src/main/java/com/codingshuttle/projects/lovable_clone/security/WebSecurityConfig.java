@@ -28,6 +28,7 @@ public class WebSecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth->auth
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/webhooks/**").permitAll()
                         .anyRequest().authenticated()
 
                 )
