@@ -17,13 +17,4 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
 jwt:
-  secretKey : ${JWT_SECRET_KEY}
-
-stripe:
-  api:
-    secretKey: ${STRIPE_SECRET_KEY}
-  webhook:
-    secretKey: ${STRIPE_WEBHOOK_SECRET}
-
-
-client.url: http://localhost:8080
+  secretKey : ad2649hd3h8dus73b37ubdhcbkba7hs6229923dh3
