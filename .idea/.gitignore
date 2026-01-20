@@ -1,6 +1,18 @@
-# Default ignored files
+# IntelliJ
+/.idea/
+/*.iml
 /shelf/
 /workspace.xml
-# Environment-dependent path to Maven home directory
 /mavenHomeManager.xml
+
+# Maven build
+/target/
+
+# Mac / Finder
 .DS_Store
+
+# VSCode (optional)
+/.vscode/
+
+# Windows explorer cache
+Thumbs.db
