@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: lovable-clone
+    description: this is application
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/advai
+    username: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+jwt:
+  secretKey : ad2649hd3h8dus73b37ubdhcbkba7hs6229923dh3
