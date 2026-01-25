@@ -21,17 +21,16 @@ import java.util.List;
 @Builder
 @Table(name = "users")
 public class User implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
     String username;
     String password;
     String name;
 
     @Column(unique = true)
     String stripeCustomerId;
-
-
 
     @CreationTimestamp
     Instant createdAt;

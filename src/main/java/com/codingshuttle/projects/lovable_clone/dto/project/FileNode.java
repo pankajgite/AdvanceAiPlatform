@@ -2,7 +2,7 @@ package com.codingshuttle.projects.lovable_clone.dto.project;
 
 import java.time.Instant;
 
-public record FileNodes(
+public record FileNode(
         String path,
         Instant modifiedAt,
         Long size,

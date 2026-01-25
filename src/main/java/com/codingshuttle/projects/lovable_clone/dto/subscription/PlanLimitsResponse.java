@@ -1,8 +1,8 @@
-package com.codingshuttle.projects.lovable_clone.dto.suscription;
+package com.codingshuttle.projects.lovable_clone.dto.subscription;
 
 public record PlanLimitsResponse(
         String planName,
-        Integer maxtokensPerDay,
+        Integer maxTokensPerDay,
         Integer maxProjects,
         Boolean unlimitedAi
 ) {

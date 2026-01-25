@@ -29,31 +29,29 @@ public class AuthServiceImpl implements AuthService {
     AuthUtil authUtil;
     AuthenticationManager authenticationManager;
 
-
-
     @Override
     public AuthResponse signup(SignupRequest request) {
         userRepository.findByUsername(request.username()).ifPresent(user -> {
-                throw new BadRequestException("Username already taken: "+request.username());
+            throw new BadRequestException("User already exists with username: "+request.username());
         });
 
-        User user = userMapper.toEntityFromSignupRequest(request);
+        User user = userMapper.toEntity(request);
         user.setPassword(passwordEncoder.encode(request.password()));
-        userRepository.save(user);
+        user = userRepository.save(user);
 
-        String token=authUtil.generateAccessToken(user);
-
-        return new AuthResponse(token,userMapper.toUserProfileResposeFromUser(user));
+        String token = authUtil.generateAccessToken(user);
+        return new AuthResponse(token, userMapper.toUserProfileResponse(user));
     }
 
     @Override
     public AuthResponse login(LoginRequest request) {
-        Authentication authentication= authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.username(),request.password())
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.username(), request.password())
         );
-        User user = (User) authentication.getPrincipal();
-        String token=authUtil.generateAccessToken(user);
 
-        return new AuthResponse(token,userMapper.toUserProfileResposeFromUser(user));
+        User user = (User) authentication.getPrincipal();
+
+        String token = authUtil.generateAccessToken(user);
+        return new AuthResponse(token, userMapper.toUserProfileResponse(user));
     }
 }

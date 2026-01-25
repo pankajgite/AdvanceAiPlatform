@@ -1,11 +1,10 @@
-package com.codingshuttle.projects.lovable_clone.dto.suscription;
+package com.codingshuttle.projects.lovable_clone.dto.subscription;
 
 public record PlanResponse(
+        Long id,
         String name,
-        String stripePriceId,
         Integer maxProjects,
         Integer maxTokensPerDay,
-        Integer maxPreviews,//max number of previews allowed per plan
         Boolean unlimitedAi,
         String price
 ) {
