@@ -6,11 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Embeddable
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-@Embeddable
+@AllArgsConstructor
 public class ProjectMemberId {
     Long projectId;
     Long userId;

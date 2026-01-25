@@ -1,11 +1,11 @@
 package com.codingshuttle.projects.lovable_clone.service;
 
-import com.codingshuttle.projects.lovable_clone.dto.suscription.PlanLimitsResponse;
-import com.codingshuttle.projects.lovable_clone.dto.suscription.UsageTodayResponse;
+import com.codingshuttle.projects.lovable_clone.dto.subscription.PlanLimitsResponse;
+import com.codingshuttle.projects.lovable_clone.dto.subscription.UsageTodayResponse;
 import org.jspecify.annotations.Nullable;
 
 public interface UsageService {
-    UsageTodayResponse getUsageToday(Long userId);
+     UsageTodayResponse getTodayUsageOfUser(Long userId);
 
-    PlanLimitsResponse getCurrentSubscriptionLimitsofUser(Long userId);
+    PlanLimitsResponse getCurrentSubscriptionLimitsOfUser(Long userId);
 }

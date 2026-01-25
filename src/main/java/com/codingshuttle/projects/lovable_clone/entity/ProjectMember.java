@@ -14,7 +14,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "project_member")
+@Table(name = "project_members")
 public class ProjectMember {
 
     @EmbeddedId
@@ -34,4 +34,5 @@ public class ProjectMember {
 
     Instant invitedAt;
     Instant acceptedAt;
+
 }

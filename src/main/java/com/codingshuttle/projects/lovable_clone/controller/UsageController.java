@@ -1,9 +1,8 @@
 package com.codingshuttle.projects.lovable_clone.controller;
 
-import com.codingshuttle.projects.lovable_clone.dto.suscription.PlanLimitsResponse;
-import com.codingshuttle.projects.lovable_clone.dto.suscription.UsageTodayResponse;
+import com.codingshuttle.projects.lovable_clone.dto.subscription.PlanLimitsResponse;
+import com.codingshuttle.projects.lovable_clone.dto.subscription.UsageTodayResponse;
 import com.codingshuttle.projects.lovable_clone.service.UsageService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,18 +13,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/usage")
 public class UsageController {
+
     private final UsageService usageService;
 
     @GetMapping("/today")
-    public ResponseEntity<UsageTodayResponse> getUsageToday() {
-        Long userId=1L;
-        return ResponseEntity.ok(usageService.getUsageToday(userId));
+    public ResponseEntity<UsageTodayResponse> getTodayUsage() {
+        Long userId = 1L;
+        return ResponseEntity.ok(usageService.getTodayUsageOfUser(userId));
     }
 
-    @GetMapping("/api/usage/limits")
+    @GetMapping("/limits")
     public ResponseEntity<PlanLimitsResponse> getPlanLimits() {
-        Long userId=1L;
-        return ResponseEntity.ok(usageService.getCurrentSubscriptionLimitsofUser(userId));
+        Long userId = 1L;
+        return ResponseEntity.ok(usageService.getCurrentSubscriptionLimitsOfUser(userId));
     }
-
 }

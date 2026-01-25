@@ -11,7 +11,7 @@ public interface ProjectMemberService {
 
     MemberResponse inviteMember(Long projectId, InviteMemberRequest request);
 
-    void removeProjectMember(Long projectId, Long memberId);
-
     MemberResponse updateMemberRole(Long projectId, Long memberId, UpdateMemberRoleRequest request);
+
+    void removeProjectMember(Long projectId, Long memberId);
 }
