@@ -70,7 +70,7 @@ public class StripePaymentProcessor implements PaymentProcessor {
             } else {
                 params.setCustomer(stripeCustomerId); // stripe customer Id
             }
-            Session session = Session.create(params.build()); // making api call to the Strip Backend
+            Session session = Session.create(params.build()); // making api call to the Stripe Backend
             return new CheckoutResponse(session.getUrl());
         } catch (StripeException e) {
             throw new RuntimeException(e);
@@ -80,19 +80,21 @@ public class StripePaymentProcessor implements PaymentProcessor {
     @Override
     public PortalResponse openCustomerPortal() {
         Long userId = authUtil.getCurrentUserId();
-        User user= getUser(userId);
+        User user = getUser(userId);
         String stripeCustomerId = user.getStripeCustomerId();
-        if (stripeCustomerId == null || stripeCustomerId.isEmpty()) {
-            throw new BadRequestException("User does not have a Stripe customer ID, userId:"+userId);
+
+        if(stripeCustomerId == null || stripeCustomerId.isEmpty()) {
+            throw new BadRequestException("User does not have a Stripe Customer Id, UserId:"+userId);
         }
 
         try {
             var portalSession = com.stripe.model.billingportal.Session.create(
                     com.stripe.param.billingportal.SessionCreateParams.builder()
                             .setCustomer(stripeCustomerId)
-                            .setReturnUrl(frontendUrl + "/success.html")
+                            .setReturnUrl(frontendUrl)
                             .build()
             );
+
             return new PortalResponse(portalSession.getUrl());
         } catch (StripeException e) {
             throw new RuntimeException(e);
@@ -193,8 +195,8 @@ public class StripePaymentProcessor implements PaymentProcessor {
     private void handleInvoicePaymentFailed(Invoice invoice) {
         String subId = extractSubscriptionId(invoice);
         if(subId == null) return;
-        subscriptionService.markSubscriptionPastDue(subId);
 
+        subscriptionService.markSubscriptionPastDue(subId);
     }
 
 

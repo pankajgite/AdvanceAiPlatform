@@ -30,7 +30,7 @@ public class BillingController {
     private final SubscriptionService subscriptionService;
     private final PaymentProcessor paymentProcessor;
 
-    @Value("${stripe.webhook.secretKey}")
+    @Value("${stripe.webhook.secret}")
     private String webhookSecret;
 
     @GetMapping("/api/plans")

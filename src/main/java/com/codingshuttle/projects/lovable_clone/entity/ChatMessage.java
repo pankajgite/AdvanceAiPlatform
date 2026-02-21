@@ -8,8 +8,9 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 
+
 @Entity
-@Table(name = "chat_message")
+@Table(name = "chat_messages")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -31,13 +32,12 @@ public class ChatMessage {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    MessageRole role;
+    MessageRole role; // USER, ASSISTANT
 
     @Column(columnDefinition = "text", nullable = false)
     String content;
 
-
-    Integer tokensUsed=0;
+    Integer tokensUsed = 0;
 
     @CreationTimestamp
     Instant createdAt;

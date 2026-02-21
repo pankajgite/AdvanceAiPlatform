@@ -9,17 +9,15 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.Instant;
 
 @Entity
-@Table(name = "chat_session")
-@Getter
-@Setter
-@NoArgsConstructor
+@Table(name = "chat_sessions")
+@Getter @Setter @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ChatSession {
 
     @EmbeddedId
-    ChatSessionId id;
+    private ChatSessionId id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @MapsId("projectId")
@@ -31,14 +29,12 @@ public class ChatSession {
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
     User user;
 
-
-
     @CreationTimestamp
-            @Column(nullable = false,updatable = false)
+    @Column(nullable = false, updatable = false)
     Instant createdAt;
 
     @UpdateTimestamp
     Instant updatedAt;
 
-    Instant deletedAt; //soft delete
+    Instant deletedAt; // soft delete
 }

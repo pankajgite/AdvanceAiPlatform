@@ -16,6 +16,7 @@ import com.codingshuttle.projects.lovable_clone.repository.ProjectRepository;
 import com.codingshuttle.projects.lovable_clone.repository.UserRepository;
 import com.codingshuttle.projects.lovable_clone.security.AuthUtil;
 import com.codingshuttle.projects.lovable_clone.service.ProjectService;
+import com.codingshuttle.projects.lovable_clone.service.ProjectTemplateService;
 import com.codingshuttle.projects.lovable_clone.service.SubscriptionService;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
@@ -40,12 +41,13 @@ public class ProjectServiceImpl implements ProjectService {
     ProjectMemberRepository projectMemberRepository;
     AuthUtil authUtil;
     SubscriptionService subscriptionService;
-
+    ProjectTemplateService projectTemplateService;
 
     @Override
     public ProjectResponse createProject(ProjectRequest request) {
-        if(!subscriptionService.canCreateProject()){
-            throw new BadRequestException("User Cannot Create New Project With current Plan Upgrade Plan now.");
+
+        if(!subscriptionService.canCreateNewProject()) {
+            throw new BadRequestException("User cannot create a New project with current Plan, Upgrade plan now.");
         }
 
         Long userId = authUtil.getCurrentUserId();
@@ -54,14 +56,11 @@ public class ProjectServiceImpl implements ProjectService {
 //        );
         User owner = userRepository.getReferenceById(userId);
 
-
-
         Project project = Project.builder()
                 .name(request.name())
                 .isPublic(false)
                 .build();
         project = projectRepository.save(project);
-
 
         ProjectMemberId projectMemberId = new ProjectMemberId(project.getId(), owner.getId());
         ProjectMember projectMember = ProjectMember.builder()
@@ -73,6 +72,8 @@ public class ProjectServiceImpl implements ProjectService {
                 .project(project)
                 .build();
         projectMemberRepository.save(projectMember);
+
+        projectTemplateService.initializeProjectFromTemplate(project.getId());
 
         return projectMapper.toProjectResponse(project);
     }

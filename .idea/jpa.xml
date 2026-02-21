@@ -4,4 +4,7 @@
     <option name="defaultUnitInitialized" value="true" />
     <option name="renamerInitialized" value="true" />
   </component>
+  <component name="JpaPluginProjectSettings">
+    <option name="lastSelectedLanguage" value="Kotlin" />
+  </component>
 </project>

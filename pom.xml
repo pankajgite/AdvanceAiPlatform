@@ -29,7 +29,7 @@
 	<properties>
 		<java.version>21</java.version>
 		<org.mapstruct.version>1.6.3</org.mapstruct.version>
-		<spring-ai.version>2.0.0-M2</spring-ai.version>
+		<spring-ai.version>2.0.0-M1</spring-ai.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -109,6 +109,17 @@
 			<artifactId>spring-ai-starter-model-openai</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>io.minio</groupId>
+			<artifactId>minio</artifactId>
+			<version>8.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>okhttp-urlconnection</artifactId>
+			<version>5.3.2</version>
+		</dependency>
+
 
 
 
@@ -141,7 +152,7 @@
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok-mapstruct-binding</artifactId>
-							<version>8.2.0</version>
+							<version>0.2.0</version>
 						</path>
 						<path>
 								<groupId>org.mapstruct</groupId>
