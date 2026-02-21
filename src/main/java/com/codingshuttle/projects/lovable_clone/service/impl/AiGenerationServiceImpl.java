@@ -52,23 +52,26 @@ public class AiGenerationServiceImpl implements AiGenerationService {
                 .user(userMessage)
                 .tools(codeGenerationTools)
                 .advisors(advisorSpec -> {
-                            advisorSpec.params(advisorParams);
-                            advisorSpec.advisors(fileTreeContextAdvisor);
-                        }
-                )
+                    advisorSpec.params(advisorParams);
+                    advisorSpec.advisors(fileTreeContextAdvisor);
+                })
                 .stream()
                 .chatResponse()
-                .doOnNext(response -> {
-                    String content = response.getResult().getOutput().getText();
-                    fullResponseBuffer.append(content);
-                })
+                .filter(response ->
+                        response.getResult() != null &&
+                                response.getResult().getOutput() != null &&
+                                response.getResult().getOutput().getText() != null
+                )
+                .map(response -> response.getResult().getOutput().getText())
+                .doOnNext(content -> fullResponseBuffer.append(content))
                 .doOnComplete(() -> {
                     Schedulers.boundedElastic().schedule(() -> {
                         parseAndSaveFiles(fullResponseBuffer.toString(), projectId);
                     });
                 })
-                .doOnError(error -> log.error("Error during streaming for projectId: {}", projectId))
-                .map(response -> Objects.requireNonNull(response.getResult().getOutput().getText()));
+                .doOnError(error ->
+                        log.error("Error during streaming for projectId: {}", projectId, error)
+                );
     }
 
 
